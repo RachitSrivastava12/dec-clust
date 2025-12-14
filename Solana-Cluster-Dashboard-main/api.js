@@ -8,12 +8,20 @@ const cookieParser = require('cookie-parser');
 
 const JWT_SECRET = process.env.JWT_SECRET || "super-secret-key";
 
+// const pool = new Pool({
+//   connectionString: "postgresql://postgres:Rachit@2209@db.qrohatrfjojfckiljaxc.supabase.co:5432/postgres",
+//   ssl: {
+//     rejectUnauthorized: false, // allow self-signed certs
+//   },
+// });
+
+
 const pool = new Pool({
-  connectionString: "postgresql://postgres:Rachit@2209@db.qrohatrfjojfckiljaxc.supabase.co:5432/postgres",
-  ssl: {
-    rejectUnauthorized: false, // allow self-signed certs
-  },
+  connectionString: process.env.DATABASE_URL,
+  ssl: { rejectUnauthorized: false },
+  family: 4, // 👈 FORCE IPv4 (THIS IS THE FIX)
 });
+
 
 // 🔹 Initialize DB tables if not exist
 async function initDB() {
@@ -53,6 +61,7 @@ function startApi(port = 3001, startPolling, stopPolling) {
   },
   credentials: true  // Allows cookies to be sent
 }));
+
 
 
 
