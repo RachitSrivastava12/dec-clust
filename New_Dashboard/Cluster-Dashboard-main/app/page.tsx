@@ -17,17 +17,20 @@ import {
   ArrowRight,
   X,
   Linkedin,
-  Mail
+  Mail,
+  Menu
 } from "lucide-react"
 
 export default function HomePage() {
   const [openFaq, setOpenFaq] = useState<number | null>(null)
-  const [mode, setMode] = useState<"signup" | null>(null)
+  const [mode, setMode] = useState<"signup" | "login" | null>(null)
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
   const [solanaAddress, setSolanaAddress] = useState("")
   const [message, setMessage] = useState("")
   const [walletDetected, setWalletDetected] = useState(false)
+  const [isLoggedIn, setIsLoggedIn] = useState(false)
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const [animatedValues, setAnimatedValues] = useState({
     sol: 0,
     wallets: 0,
@@ -35,8 +38,14 @@ export default function HomePage() {
   })
 
   useEffect(() => {
-    if (typeof window !== "undefined" && "solana" in window) {
-      setWalletDetected(true)
+    // Check if user is logged in
+    if (typeof window !== "undefined") {
+      const loggedIn = localStorage.getItem("isLoggedIn") === "true"
+      setIsLoggedIn(loggedIn)
+      
+      if ("solana" in window) {
+        setWalletDetected(true)
+      }
     }
 
     // Animate hero stats
@@ -86,13 +95,76 @@ export default function HomePage() {
       })
       const data = await res.json()
       if (res.ok) {
-        setMessage(`✅ Welcome! ${data.user?.email || data.user?.solana_address}`)
-        setMode(null)
+        setMessage(`✅ Signed up! ${data.user?.email || data.user?.solana_address}`)
+        setIsLoggedIn(true)
+        if (typeof window !== "undefined") {
+          localStorage.setItem("isLoggedIn", "true")
+        }
+        setTimeout(() => {
+          setMode(null)
+          setEmail("")
+          setPassword("")
+          setSolanaAddress("")
+          setMessage("")
+        }, 1500)
       } else {
         setMessage(`❌ ${data.error || 'Signup failed'}`)
       }
     } catch {
       setMessage("❌ Connection error")
+    }
+  }
+
+  const handleLogin = async () => {
+    if (!email && !solanaAddress) {
+      setMessage("❌ Email or wallet required")
+      return
+    }
+    if (email && !password) {
+      setMessage("❌ Password required")
+      return
+    }
+    try {
+      const res = await fetch("https://dec-clust-1.onrender.com/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        credentials: "include",
+        body: JSON.stringify({ email, password, solanaAddress }),
+      })
+      const data = await res.json()
+      if (res.ok) {
+        setMessage(`✅ Welcome back! ${data.user?.email || data.user?.solana_address}`)
+        setIsLoggedIn(true)
+        if (typeof window !== "undefined") {
+          localStorage.setItem("isLoggedIn", "true")
+        }
+        setTimeout(() => {
+          setMode(null)
+          setEmail("")
+          setPassword("")
+          setSolanaAddress("")
+          setMessage("")
+        }, 1500)
+      } else {
+        setMessage(`❌ ${data.error || 'Login failed'}`)
+      }
+    } catch {
+      setMessage("❌ Connection error")
+    }
+  }
+
+  const handleLogout = async () => {
+    try {
+      await fetch("https://dec-clust-1.onrender.com/logout", {
+        method: "POST",
+        credentials: "include",
+      })
+      setIsLoggedIn(false)
+      if (typeof window !== "undefined") {
+        localStorage.removeItem("isLoggedIn")
+      }
+    } catch {
+      console.error("Logout failed")
     }
   }
 
@@ -133,22 +205,178 @@ export default function HomePage() {
                 DecClust
               </span>
             </div>
+
+            {/* Desktop Navigation */}
+            <div className="hidden md:flex items-center space-x-4">
+              {isLoggedIn ? (
+                <>
+                  <a href="/dashboard" className="text-foreground hover:text-primary transition-colors">
+                    Dashboard
+                  </a>
+                  <button
+                    onClick={handleLogout}
+                    className="px-4 py-2 rounded-lg border border-border text-foreground hover:bg-muted transition-all duration-300"
+                  >
+                    Logout
+                  </button>
+                </>
+              ) : (
+                <>
+                  <button
+                    onClick={() => setMode("login")}
+                    className="px-4 py-2 rounded-lg border border-border text-foreground hover:bg-muted transition-all duration-300"
+                  >
+                    Login
+                  </button>
+                  <button
+                    onClick={() => setMode("signup")}
+                    className="px-6 py-2 rounded-lg bg-primary text-primary-foreground font-medium hover:bg-primary/90 transition-all duration-300"
+                  >
+                    Sign Up
+                  </button>
+                </>
+              )}
+            </div>
+
+            {/* Mobile Menu Button */}
             <button
-              onClick={() => setMode("signup")}
-              className="px-6 py-2 rounded-lg bg-primary text-primary-foreground font-medium hover:bg-primary/90 transition-all duration-300"
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+              className="md:hidden text-foreground"
             >
-              Get Early Access
+              <Menu className="w-6 h-6" />
             </button>
           </div>
+
+          {/* Mobile Menu */}
+          {mobileMenuOpen && (
+            <div className="md:hidden py-4 border-t border-border">
+              {isLoggedIn ? (
+                <div className="space-y-2">
+                  <a href="/dashboard" className="block px-4 py-2 text-foreground hover:bg-muted rounded-lg transition-colors">
+                    Dashboard
+                  </a>
+                  <button
+                    onClick={handleLogout}
+                    className="w-full text-left px-4 py-2 text-foreground hover:bg-muted rounded-lg transition-colors"
+                  >
+                    Logout
+                  </button>
+                </div>
+              ) : (
+                <div className="space-y-2">
+                  <button
+                    onClick={() => {
+                      setMode("login")
+                      setMobileMenuOpen(false)
+                    }}
+                    className="w-full text-left px-4 py-2 text-foreground hover:bg-muted rounded-lg transition-colors"
+                  >
+                    Login
+                  </button>
+                  <button
+                    onClick={() => {
+                      setMode("signup")
+                      setMobileMenuOpen(false)
+                    }}
+                    className="w-full text-left px-4 py-2 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 transition-colors"
+                  >
+                    Sign Up
+                  </button>
+                </div>
+              )}
+            </div>
+          )}
         </div>
       </nav>
+
+      {/* Login Modal */}
+      {mode === "login" && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 backdrop-blur-sm p-4">
+          <div className="bg-card rounded-2xl p-8 max-w-md w-full border border-border shadow-2xl relative">
+            <button
+              onClick={() => {
+                setMode(null)
+                setMessage("")
+              }}
+              className="absolute top-4 right-4 text-muted-foreground hover:text-foreground transition-colors"
+            >
+              <X className="w-5 h-5" />
+            </button>
+            
+            <h2 className="text-2xl font-bold text-foreground mb-6">Welcome Back</h2>
+            
+            <div className="space-y-4">
+              <div>
+                <input
+                  type="email"
+                  placeholder="Email address"
+                  className="w-full px-4 py-3 rounded-lg bg-background border border-border text-foreground placeholder:text-muted-foreground focus:border-primary focus:outline-none transition-colors"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                />
+              </div>
+              
+              <div>
+                <input
+                  type="password"
+                  placeholder="Password"
+                  className="w-full px-4 py-3 rounded-lg bg-background border border-border text-foreground placeholder:text-muted-foreground focus:border-primary focus:outline-none transition-colors"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                />
+              </div>
+              
+              <div className="flex gap-2">
+                <input
+                  type="text"
+                  placeholder="Or Solana Address"
+                  className="flex-1 px-4 py-3 rounded-lg bg-background border border-border text-foreground placeholder:text-muted-foreground focus:border-primary focus:outline-none transition-colors"
+                  value={solanaAddress}
+                  onChange={(e) => setSolanaAddress(e.target.value)}
+                />
+                {walletDetected && (
+                  <button
+                    onClick={connectWallet}
+                    className="px-4 py-3 rounded-lg bg-background border border-border text-foreground hover:border-primary transition-colors whitespace-nowrap"
+                  >
+                    Connect
+                  </button>
+                )}
+              </div>
+              
+              <button
+                onClick={handleLogin}
+                className="w-full px-6 py-3 rounded-lg bg-primary text-primary-foreground font-medium hover:bg-primary/90 transition-all duration-300"
+              >
+                Login
+              </button>
+
+              <div className="text-center">
+                <button
+                  onClick={() => setMode("signup")}
+                  className="text-sm text-muted-foreground hover:text-primary transition-colors"
+                >
+                  Don't have an account? <span className="font-semibold">Sign up</span>
+                </button>
+              </div>
+            </div>
+            
+            {message && (
+              <p className="mt-4 text-sm text-center text-muted-foreground">{message}</p>
+            )}
+          </div>
+        </div>
+      )}
 
       {/* Signup Modal */}
       {mode === "signup" && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 backdrop-blur-sm p-4">
           <div className="bg-card rounded-2xl p-8 max-w-md w-full border border-border shadow-2xl relative">
             <button
-              onClick={() => setMode(null)}
+              onClick={() => {
+                setMode(null)
+                setMessage("")
+              }}
               className="absolute top-4 right-4 text-muted-foreground hover:text-foreground transition-colors"
             >
               <X className="w-5 h-5" />
@@ -199,8 +427,17 @@ export default function HomePage() {
                 onClick={handleSignup}
                 className="w-full px-6 py-3 rounded-lg bg-primary text-primary-foreground font-medium hover:bg-primary/90 transition-all duration-300"
               >
-                Join Waitlist
+                Sign Up
               </button>
+
+              <div className="text-center">
+                <button
+                  onClick={() => setMode("login")}
+                  className="text-sm text-muted-foreground hover:text-primary transition-colors"
+                >
+                  Already have an account? <span className="font-semibold">Login</span>
+                </button>
+              </div>
             </div>
             
             {message && (
