@@ -4,7 +4,7 @@ require('dotenv').config();
 
 module.exports = {
   // Use mainnet RPC URL
-  RPC_URL: process.env.RPC_URL || 'https://api.mainnet-beta.solana.com',
+  RPC_URL: process.env.RPC_URL || 'https://mainnet.helius-rpc.com/?api-key=866ca2a0-db6a-4527-adfe-3a1aa6682c65',
   
   // Poll every 1 second for faster detection
   POLL_INTERVAL_MS: parseInt(process.env.POLL_INTERVAL_MS || '1000', 10),
