@@ -1,0 +1,240 @@
+/* src/App.css */
+.app {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: #f0f4f8;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.header {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.header h1 {
+  color: #1a73e8;
+  font-size: 2em;
+}
+
+.header p {
+  color: #555;
+  font-size: 1em;
+}
+
+.controls {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 15px;
+  gap: 10px;
+}
+
+.search-input {
+  padding: 10px;
+  width: 50%;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 1em;
+}
+
+.status-filter {
+  padding: 10px;
+  width: 25%;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 1em;
+  background-color: white;
+}
+
+.polling-btn {
+  padding: 10px;
+  border: none;
+  border-radius: 5px;
+  font-size: 1em;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  width: 12.5%;
+}
+
+.polling-btn.active {
+  background-color: #28a745;
+  color: white;
+}
+
+.polling-btn.stop {
+  background-color: #dc3545;
+  color: white;
+}
+
+.polling-btn:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+.polling-btn:not(:disabled):hover {
+  filter: brightness(85%);
+}
+
+.table-container {
+  overflow-x: auto;
+}
+
+.cluster-table {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: white;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.cluster-table th {
+  background-color: #1a73e8;
+  color: white;
+  padding: 12px;
+  text-align: left;
+  font-weight: bold;
+  font-size: 0.9em;
+}
+
+.cluster-table td {
+  padding: 12px;
+  border-bottom: 1px solid #eee;
+  text-align: left;
+  font-size: 0.9em;
+}
+
+.cluster-row:hover {
+  background-color: #f5faff;
+  transition: background-color 0.2s;
+}
+
+.status-active {
+  color: #28a745;
+  font-weight: bold;
+}
+
+.status-forming {
+  color: #ffc107;
+  font-weight: bold;
+}
+
+.low-remaining {
+  color: #dc3545;
+  font-weight: bold;
+}
+
+.no-data {
+  text-align: center;
+  color: #888;
+  padding: 20px;
+}
+
+.loading, .error {
+  text-align: center;
+  font-size: 1.2em;
+  color: #888;
+  margin-top: 10px;
+}
+
+.error {
+  color: #dc3545;
+}
+
+.view-children-btn {
+  background-color: #1a73e8;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.8em;
+  transition: background-color 0.2s;
+}
+
+.view-children-btn:hover {
+  background-color: #1557b0;
+}
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal {
+  background-color: white;
+  border-radius: 8px;
+  padding: 20px;
+  max-width: 600px;
+  width: 90%;
+  max-height: 80vh;
+  overflow-y: auto;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.modal h2 {
+  margin-top: 0;
+  color: #1a73e8;
+  font-size: 1.5em;
+}
+
+.child-addresses {
+  margin: 15px 0;
+  max-height: 400px;
+  overflow-y: auto;
+}
+
+.child-address {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px;
+  border-bottom: 1px solid #eee;
+  font-size: 0.9em;
+}
+
+.child-address:last-child {
+  border-bottom: none;
+}
+
+.copy-btn {
+  background-color: #28a745;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.8em;
+  transition: background-color 0.2s;
+}
+
+.copy-btn:hover {
+  background-color: #218838;
+}
+
+.close-btn {
+  background-color: #dc3545;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 1em;
+  display: block;
+  margin: 10px auto 0;
+  transition: background-color 0.2s;
+}
+
+.close-btn:hover {
+  background-color: #c82333;
+}
