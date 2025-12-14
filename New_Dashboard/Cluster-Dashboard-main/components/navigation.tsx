@@ -40,7 +40,7 @@
 // //       // Fallback to API check if no localStorage data
 // //       const checkSession = async () => {
 // //         try {
-// //           const res = await fetch("https://solana-cluster-dashboard-production-cce9.up.railway.app/me", { credentials: "include" })
+// //           const res = await fetch("https://dec-clust-1.onrender.com/me", { credentials: "include" })
 // //           const loggedIn = res.ok
 // //           setIsLoggedIn(loggedIn)
 // //           if (setIsLoggedInState) setIsLoggedInState(loggedIn) // Only call if prop exists
@@ -60,7 +60,7 @@
 // //   }, [setIsLoggedInState])
 
 // //   const handleLogout = async () => {
-// //     await fetch("https://solana-cluster-dashboard-production-cce9.up.railway.app/logout", {
+// //     await fetch("https://dec-clust-1.onrender.com/logout", {
 // //       method: "POST",
 // //       credentials: "include"
 // //     })
@@ -103,7 +103,7 @@
 // //       return
 // //     }
 // //     try {
-// //       const res = await fetch("https://solana-cluster-dashboard-production-cce9.up.railway.app/signup", {
+// //       const res = await fetch("https://dec-clust-1.onrender.com/signup", {
 // //         method: "POST",
 // //         headers: { "Content-Type": "application/json" },
 // //         credentials: "include",
@@ -136,7 +136,7 @@
 // //       return
 // //     }
 // //     try {
-// //       const res = await fetch("https://solana-cluster-dashboard-production-cce9.up.railway.app/login", {
+// //       const res = await fetch("https://dec-clust-1.onrender.com/login", {
 // //         method: "POST",
 // //         headers: { "Content-Type": "application/json" },
 // //         credentials: "include",
@@ -352,7 +352,7 @@
 //       // Fallback to API check if no localStorage data
 //       const checkSession = async () => {
 //         try {
-//           const res = await fetch("https://solana-cluster-dashboard-production-cce9.up.railway.app/me", {
+//           const res = await fetch("https://dec-clust-1.onrender.com/me", {
 //             credentials: "include",
 //           })
 //           const loggedIn = res.ok
@@ -374,7 +374,7 @@
 //   }, [setIsLoggedInState])
 
 //   const handleLogout = async () => {
-//     await fetch("https://solana-cluster-dashboard-production-cce9.up.railway.app/logout", {
+//     await fetch("https://dec-clust-1.onrender.com/logout", {
 //       method: "POST",
 //       credentials: "include",
 //     })
@@ -417,7 +417,7 @@
 //       return
 //     }
 //     try {
-//       const res = await fetch("https://solana-cluster-dashboard-production-cce9.up.railway.app/signup", {
+//       const res = await fetch("https://dec-clust-1.onrender.com/signup", {
 //         method: "POST",
 //         headers: { "Content-Type": "application/json" },
 //         credentials: "include",
@@ -450,7 +450,7 @@
 //       return
 //     }
 //     try {
-//       const res = await fetch("https://solana-cluster-dashboard-production-cce9.up.railway.app/login", {
+//       const res = await fetch("https://dec-clust-1.onrender.com/login", {
 //         method: "POST",
 //         headers: { "Content-Type": "application/json" },
 //         credentials: "include",
@@ -676,14 +676,14 @@
 //       const checkSession = async () => {
 //         try {
 //           // Try GET first, fallback to POST if GET returns 405
-//           let res = await fetch("https://solana-cluster-dashboard-production-cce9.up.railway.app/me", {
+//           let res = await fetch("https://dec-clust-1.onrender.com/me", {
 //             method: "GET",
 //             credentials: "include",
 //           })
           
 //           // If GET returns 405, try POST
 //           if (res.status === 405) {
-//             res = await fetch("https://solana-cluster-dashboard-production-cce9.up.railway.app/me", {
+//             res = await fetch("https://dec-clust-1.onrender.com/me", {
 //               method: "POST",
 //               credentials: "include",
 //             })
@@ -710,7 +710,7 @@
 
 //   const handleLogout = async () => {
 //     try {
-//       await fetch("https://solana-cluster-dashboard-production-cce9.up.railway.app/logout", {
+//       await fetch("https://dec-clust-1.onrender.com/logout", {
 //         method: "POST",
 //         credentials: "include",
 //       })
@@ -756,7 +756,7 @@
 //       return
 //     }
 //     try {
-//       const res = await fetch("https://solana-cluster-dashboard-production-cce9.up.railway.app/signup", {
+//       const res = await fetch("https://dec-clust-1.onrender.com/signup", {
 //         method: "POST",
 //         headers: { "Content-Type": "application/json" },
 //         credentials: "include",
@@ -789,7 +789,7 @@
 //       return
 //     }
 //     try {
-//       const res = await fetch("https://solana-cluster-dashboard-production-cce9.up.railway.app/login", {
+//       const res = await fetch("https://dec-clust-1.onrender.com/login", {
 //         method: "POST",
 //         headers: { "Content-Type": "application/json" },
 //         credentials: "include",
@@ -1054,14 +1054,14 @@
 //       const checkSession = async () => {
 //         try {
 //           // Try GET first, fallback to POST if GET returns 405
-//           let res = await fetch("https://solana-cluster-dashboard-production-cce9.up.railway.app/me", {
+//           let res = await fetch("https://dec-clust-1.onrender.com/me", {
 //             method: "GET",
 //             credentials: "include",
 //           })
           
 //           // If GET returns 405, try POST
 //           if (res.status === 405) {
-//             res = await fetch("https://solana-cluster-dashboard-production-cce9.up.railway.app/me", {
+//             res = await fetch("https://dec-clust-1.onrender.com/me", {
 //               method: "POST",
 //               credentials: "include",
 //             })
@@ -1088,7 +1088,7 @@
 
 //   const handleLogout = async () => {
 //     try {
-//       await fetch("https://solana-cluster-dashboard-production-cce9.up.railway.app/logout", {
+//       await fetch("https://dec-clust-1.onrender.com/logout", {
 //         method: "POST",
 //         credentials: "include",
 //       })
@@ -1134,7 +1134,7 @@
 //       return
 //     }
 //     try {
-//       const res = await fetch("https://solana-cluster-dashboard-production-cce9.up.railway.app/signup", {
+//       const res = await fetch("https://dec-clust-1.onrender.com/signup", {
 //         method: "POST",
 //         headers: { "Content-Type": "application/json" },
 //         credentials: "include",
@@ -1167,7 +1167,7 @@
 //       return
 //     }
 //     try {
-//       const res = await fetch("https://solana-cluster-dashboard-production-cce9.up.railway.app/login", {
+//       const res = await fetch("https://dec-clust-1.onrender.com/login", {
 //         method: "POST",
 //         headers: { "Content-Type": "application/json" },
 //         credentials: "include",
@@ -1473,14 +1473,14 @@
 //       const checkSession = async () => {
 //         try {
 //           // Try GET first, fallback to POST if GET returns 405
-//           let res = await fetch("https://solana-cluster-dashboard-production-cce9.up.railway.app/me", {
+//           let res = await fetch("https://dec-clust-1.onrender.com/me", {
 //             method: "GET",
 //             credentials: "include",
 //           })
           
 //           // If GET returns 405, try POST
 //           if (res.status === 405) {
-//             res = await fetch("https://solana-cluster-dashboard-production-cce9.up.railway.app/me", {
+//             res = await fetch("https://dec-clust-1.onrender.com/me", {
 //               method: "POST",
 //               credentials: "include",
 //             })
@@ -1507,7 +1507,7 @@
 
 //   const handleLogout = async () => {
 //     try {
-//       await fetch("https://solana-cluster-dashboard-production-cce9.up.railway.app/logout", {
+//       await fetch("https://dec-clust-1.onrender.com/logout", {
 //         method: "POST",
 //         credentials: "include",
 //       })
@@ -1553,7 +1553,7 @@
 //       return
 //     }
 //     try {
-//       const res = await fetch("https://solana-cluster-dashboard-production-cce9.up.railway.app/signup", {
+//       const res = await fetch("https://dec-clust-1.onrender.com/signup", {
 //         method: "POST",
 //         headers: { "Content-Type": "application/json" },
 //         credentials: "include",
@@ -1586,7 +1586,7 @@
 //       return
 //     }
 //     try {
-//       const res = await fetch("https://solana-cluster-dashboard-production-cce9.up.railway.app/login", {
+//       const res = await fetch("https://dec-clust-1.onrender.com/login", {
 //         method: "POST",
 //         headers: { "Content-Type": "application/json" },
 //         credentials: "include",
@@ -1621,7 +1621,7 @@
 //       formData.append('file', supportFile)
 //     }
 //     try {
-//       const res = await fetch("https://solana-cluster-dashboard-production-cce9.up.railway.app/support", {
+//       const res = await fetch("https://dec-clust-1.onrender.com/support", {
 //         method: "POST",
 //         body: formData,
 //         credentials: "include",
@@ -1953,14 +1953,14 @@ export function Navigation({ setIsLoggedInState }: { setIsLoggedInState?: (isLog
       const checkSession = async () => {
         try {
           // Try GET first, fallback to POST if GET returns 405
-          let res = await fetch("https://solana-cluster-dashboard-production-cce9.up.railway.app/me", {
+          let res = await fetch("https://dec-clust-1.onrender.com/me", {
             method: "GET",
             credentials: "include",
           })
           
           // If GET returns 405, try POST
           if (res.status === 405) {
-            res = await fetch("https://solana-cluster-dashboard-production-cce9.up.railway.app/me", {
+            res = await fetch("https://dec-clust-1.onrender.com/me", {
               method: "POST",
               credentials: "include",
             })
@@ -1987,7 +1987,7 @@ export function Navigation({ setIsLoggedInState }: { setIsLoggedInState?: (isLog
 
   const handleLogout = async () => {
     try {
-      await fetch("https://solana-cluster-dashboard-production-cce9.up.railway.app/logout", {
+      await fetch("https://dec-clust-1.onrender.com/logout", {
         method: "POST",
         credentials: "include",
       })
@@ -2033,7 +2033,7 @@ export function Navigation({ setIsLoggedInState }: { setIsLoggedInState?: (isLog
       return
     }
     try {
-      const res = await fetch("https://solana-cluster-dashboard-production-cce9.up.railway.app/signup", {
+      const res = await fetch("https://dec-clust-1.onrender.com/signup", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         credentials: "include",
@@ -2066,7 +2066,7 @@ export function Navigation({ setIsLoggedInState }: { setIsLoggedInState?: (isLog
       return
     }
     try {
-      const res = await fetch("https://solana-cluster-dashboard-production-cce9.up.railway.app/login", {
+      const res = await fetch("https://dec-clust-1.onrender.com/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         credentials: "include",
@@ -2101,7 +2101,7 @@ export function Navigation({ setIsLoggedInState }: { setIsLoggedInState?: (isLog
       formData.append('file', supportFile)
     }
     try {
-      const res = await fetch("https://solana-cluster-dashboard-production-cce9.up.railway.app/support", {
+      const res = await fetch("https://dec-clust-1.onrender.com/support", {
         method: "POST",
         body: formData,
         credentials: "include",

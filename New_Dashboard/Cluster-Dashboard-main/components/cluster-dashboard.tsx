@@ -206,7 +206,7 @@
 //   const [selectedCluster, setSelectedCluster] = useState<Cluster | null>(null)
 //   const { toast } = useToast()
 
-//   const API_BASE = "https://solana-cluster-dashboard-production-cce9.up.railway.app"
+//   const API_BASE = "https://dec-clust-1.onrender.com"
 
 //   const fetchData = async () => {
 //     try {
@@ -810,7 +810,7 @@ export function ClusterDashboard() {
     setTimeout(() => setToastMessage(null), 3000)
   }
 
-  const API_BASE = "https://solana-cluster-dashboard-production-cce9.up.railway.app"
+  const API_BASE = "https://dec-clust-1.onrender.com"
 
   const fetchData = async () => {
     try {

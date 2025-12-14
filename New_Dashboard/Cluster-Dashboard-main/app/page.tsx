@@ -20,7 +20,7 @@ import {
   TrendingUp,
   Shield,
   Zap,
-  Users,
+  Users,                  
   BarChart,
 } from "lucide-react"
 import { useState, useEffect } from "react"
@@ -85,7 +85,7 @@ export default function HomePage() {
       return
     }
     try {
-      const res = await fetch("https://solana-cluster-dashboard-production-cce9.up.railway.app/signup", {
+      const res = await fetch("https://dec-clust-1.onrender.com/signup", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         credentials: "include",
