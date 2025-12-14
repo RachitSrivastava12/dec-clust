@@ -9,7 +9,7 @@ import { Suspense } from "react"
 import "./globals.css"
 
 export const metadata: Metadata = {
-  title: "SolanaWatch - Cluster Monitor",
+  title: "DecClust - Cluster Monitor",
   description: "Real-time Solana funding cluster monitoring and trading intelligence",
   generator: "v0.app",
 }
