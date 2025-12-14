@@ -10,7 +10,7 @@ if (!RPC_URL) {
 
 // Use 'processed' for faster ingestion
 const connection = new Connection('https://mainnet.helius-rpc.com/?api-key=866ca2a0-db6a-4527-adfe-3a1aa6682c65', 'processed');
-console.log('Connected to Solana Mainnet RPC:', RPC_URL || 'https://mainnet.helius-rpc.com/?api-key=866ca2a0-db6a-4527-adfe-3a1aa6682c65');
+console.log('Connected to Solana Mainnet RPC:','https://mainnet.helius-rpc.com/?api-key=866ca2a0-db6a-4527-adfe-3a1aa6682c65');
 
 let lastProcessedSlot = 0;
 let pollInterval = null;
