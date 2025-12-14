@@ -17,7 +17,7 @@ const JWT_SECRET = process.env.JWT_SECRET || "super-secret-key";
 
 
 const pool = new Pool({
-  connectionString: process.env.DATABASE_URL,
+  connectionString: "postgresql://postgres:Rachit@2209@db.qrohatrfjojfckiljaxc.supabase.co:5432/postgres",
   ssl: { rejectUnauthorized: false },
   family: 4, // 👈 FORCE IPv4 (THIS IS THE FIX)
 });
