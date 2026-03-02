@@ -159,7 +159,7 @@ function startSSEBroadcast() {
 
 // ─── App Factory ──────────────────────────────────────────────────────────────
 function startApi(port, startPolling, stopPolling) {
-  initDB();
+
   startSSEBroadcast();
 
   const app = express();
