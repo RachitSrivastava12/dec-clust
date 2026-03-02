@@ -1272,13 +1272,6 @@ export default function HomePage() {
               <a href="/dashboard" className="nav-btn nav-dashboard-btn">
                 DASHBOARD →
               </a>
-              <button 
-                onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-                style={{ background: "none", border: "none", cursor: "pointer", color: "var(--text)" }}
-                className="mobile-menu-btn"
-              >
-                {mobileMenuOpen ? <XIcon size={22} /> : <Menu size={22} />}
-              </button>
             </div>
           </div>
         </div>
