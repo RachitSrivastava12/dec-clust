@@ -4,7 +4,7 @@ require('dotenv').config();
 
 module.exports = {
   // Use mainnet RPC URL
-  RPC_URL: process.env.RPC_URL ,
+  RPC_URL: "https://convincing-nameless-river.solana-mainnet.quiknode.pro/6aa580ab6b1189a84dfa37bd5e479fdb9a19bd6c" ,
   
   // Poll every 1 second for faster detection
   POLL_INTERVAL_MS: parseInt(process.env.POLL_INTERVAL_MS || '1000', 10),
