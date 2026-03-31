@@ -1,16 +1,14 @@
 'use strict';
 
 /**
- * ALPHA INDEX.JS v2.1
- * 
- * Critical fixes:
- *  1. ingestTransfer runs BEFORE detectClusterBehavior — so cluster exists when behavior fires
- *  2. detectClusterBehavior now also runs on ALL txns (not just child-wallet txns)
- *     so buys made in the same block as funding are captured
- *  3. Retrospective scan: when a cluster first goes active/forming, we re-scan
- *     recent signatures for each child wallet to catch buys we may have missed
- *  4. Spend rate N/A fix: initializes balance history immediately from funding amounts
- *  5. Slot subscription properly handles rapid slot bursts without stacking
+ * ALPHA INDEX.JS v2.2
+ *
+ * Fix v2.2:
+ *  - startPolling() is now called directly on boot in start()
+ *    instead of waiting for a /clusters HTTP hit.
+ *    This means SSE clients connecting to /clusters/stream
+ *    will immediately receive live data without needing to
+ *    hit /clusters first.
  */
 
 const { Connection } = require('@solana/web3.js');
@@ -25,7 +23,7 @@ const {
   ingestTransfer,
   updateBalances,
   getClusterStats,
-  detectClusterBehavior,  https://hardworking-omniscient-panorama.solana-mainnet.quiknode.pro/b6691a98b125aba5fc836b2e9f0438764df1c0fe/
+  detectClusterBehavior,
   clearClusters,
   _clusters,
 } = require('./cluster');
@@ -76,8 +74,6 @@ const jitter = (ms) => ms + Math.floor(Math.random() * ms * 0.25);
 const sol    = (l) => (l / 1e9).toFixed(6);
 
 // ─── Retrospective Child Wallet Scan ─────────────────────────────────────────
-// When a cluster first forms, we missed any buys that happened before we
-// detected the cluster. This scans recent txns for each child wallet.
 
 async function retroScanCluster(cluster) {
   const parentKey = cluster.parent;
@@ -117,13 +113,11 @@ async function retroScanCluster(cluster) {
   console.log(`✅ Retro scan done for cluster ${parentKey.slice(0, 8)}`);
 }
 
-// Check all active/forming clusters and kick off retro scans for new ones
 async function triggerRetroScans() {
   if (!_clusters) return;
   for (const cluster of _clusters.values()) {
     if (cluster.status === 'inactive') continue;
     if (retroScanned.has(cluster.parent)) continue;
-    // Don't await — run in background so it doesn't block polling
     retroScanCluster(cluster).catch(e => console.warn('Retro scan error:', e.message));
   }
 }
@@ -138,7 +132,6 @@ function processTx(tx, blockTime, slot) {
   const accKeys = msg.accountKeys || [];
   const sig     = tx.transaction.signatures[0];
 
-  // Flatten all instructions
   const allIxs = [...(msg.instructions || [])];
   for (const inner of (meta.innerInstructions || [])) {
     if (inner.instructions) allIxs.push(...inner.instructions);
@@ -147,7 +140,6 @@ function processTx(tx, blockTime, slot) {
   let ixIdx = 0;
 
   // ── PASS 1: Ingest transfers first ───────────────────────────────────────
-  // Critical: cluster must exist before detectClusterBehavior runs
   for (const ix of allIxs) {
     // Native SOL transfer
     if (ix.program === 'system' && ix.parsed?.type === 'transfer') {
@@ -170,7 +162,6 @@ function processTx(tx, blockTime, slot) {
       const lamps = Number(amount) || 0;
       if (lamps < MIN_TRANSFER_LAMPORTS) { ixIdx++; continue; }
 
-      // Resolve token account → owner
       const destIdx = accKeys.findIndex(k =>
         (k.pubkey ? k.pubkey.toString() : k.toString()) === destTokenAcc
       );
@@ -190,9 +181,6 @@ function processTx(tx, blockTime, slot) {
   }
 
   // ── PASS 2: Behavior detection on ALL transactions ────────────────────────
-  // Run on every tx — not just ones we know about — because:
-  // (a) a child wallet might buy in the same block it was funded
-  // (b) a child might transact before we saw its funding tx
   detectClusterBehavior(tx, blockTime, slot);
 }
 
@@ -227,7 +215,7 @@ async function processSlot(slot) {
       const is429     = e.message?.includes('429') || e.message?.includes('Too Many Requests');
       const isSkipped = e.message?.includes('skipped') || e.message?.includes('SlotNotAvailable') || e.message?.includes('was skipped');
 
-      if (isSkipped) return; // normal — slot skipped by validator
+      if (isSkipped) return;
 
       if (attempt < MAX_SLOT_RETRIES - 1) {
         const delay = is429
@@ -261,7 +249,6 @@ async function poll() {
       console.log(`🔖 Starting from slot ${lastProcessedSlot} (3 behind current ${current})`);
     }
 
-    // Catchup cap — skip stale slots if too far behind
     const gap = current - lastProcessedSlot;
     if (gap > MAX_SLOTS_CATCHUP) {
       lastProcessedSlot = current - MAX_SLOTS_CATCHUP;
@@ -282,7 +269,6 @@ async function poll() {
       await sleep(SLOT_DELAY_MS);
     }
 
-    // After processing slots, kick off retro scans for any new clusters
     if (toProcess.length > 0) {
       triggerRetroScans().catch(() => {});
     }
@@ -309,7 +295,6 @@ async function safeUpdateBalances() {
   if (!state.isPollingStarted || shutdownRequested) return;
   if (isBalanceRunning) return;
 
-  // Wait for poll to drain first
   let waited = 0;
   while (isPollRunning && waited < 10_000) { await sleep(200); waited += 200; }
 
@@ -351,12 +336,11 @@ async function stopPolling() {
   state.isPollingStarted = false;
   shutdownRequested = true;
 
-  if (pollInterval)   { clearInterval(pollInterval);   pollInterval   = null; }
-  if (balanceInterval){ clearInterval(balanceInterval); balanceInterval = null; }
+  if (pollInterval)    { clearInterval(pollInterval);    pollInterval    = null; }
+  if (balanceInterval) { clearInterval(balanceInterval); balanceInterval = null; }
 
   await unsubscribeSlots();
 
-  // Drain in-flight ops (max 5s)
   let w = 0;
   while ((isPollRunning || isBalanceRunning) && w < 5000) { await sleep(200); w += 200; }
   console.log('✅ Polling stopped');
@@ -381,15 +365,12 @@ async function startPolling() {
 
   subscribeToSlots();
 
-  // Interval as backup / catch-up
   pollInterval = setInterval(async () => {
     if (!isPollRunning) await poll();
   }, POLL_INTERVAL_MS);
 
-  // Staggered initial balance update
   setTimeout(() => safeUpdateBalances(), 8_000);
 
-  // Regular balance refresh — run more frequently (every 10s) so spend rate populates faster
   balanceInterval = setInterval(safeUpdateBalances, Math.min(SPEND_REFRESH_MS, 10_000));
 
   console.log(`⏱️  Poll: ${POLL_INTERVAL_MS}ms | Balance: ${Math.min(SPEND_REFRESH_MS, 10_000)}ms`);
@@ -401,6 +382,11 @@ async function start() {
   const port = process.env.PORT || 3001;
   startApi(port, startPolling, stopPolling);
   console.log('✅ API server started');
+
+  // ✅ KEY FIX: start polling immediately on boot so SSE clients
+  // connecting to /clusters/stream get live data right away,
+  // without needing to hit /clusters first.
+  await startPolling();
 
   const shutdown = async (sig) => {
     console.log(`\n🛑 ${sig} — shutting down...`);
