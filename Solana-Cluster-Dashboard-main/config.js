@@ -4,7 +4,7 @@ require('dotenv').config();
 
 module.exports = {
   // Use mainnet RPC URL
-  RPC_URL: "https://convincing-nameless-river.solana-mainnet.quiknode.pro/6aa580ab6b1189a84dfa37bd5e479fdb9a19bd6c" ,
+  RPC_URL: "https://hardworking-omniscient-panorama.solana-mainnet.quiknode.pro/b6691a98b125aba5fc836b2e9f0438764df1c0fe/" ,
   // this url will be inactive in a week no need to hide it)
   
   // Poll every 1 second for faster detection
