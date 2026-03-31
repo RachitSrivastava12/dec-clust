@@ -25,7 +25,7 @@ const {
   ingestTransfer,
   updateBalances,
   getClusterStats,
-  detectClusterBehavior,
+  detectClusterBehavior,  https://hardworking-omniscient-panorama.solana-mainnet.quiknode.pro/b6691a98b125aba5fc836b2e9f0438764df1c0fe/
   clearClusters,
   _clusters,
 } = require('./cluster');
@@ -35,7 +35,7 @@ const state = require('./state');
 
 // ─── Config ───────────────────────────────────────────────────────────────────
 
-const RPC_ENDPOINT      = RPC_URL || 'https://convincing-nameless-river.solana-mainnet.quiknode.pro/6aa580ab6b1189a84dfa37bd5e479fdb9a19bd6c/';
+const RPC_ENDPOINT      = RPC_URL || 'https://hardworking-omniscient-panorama.solana-mainnet.quiknode.pro/b6691a98b125aba5fc836b2e9f0438764df1c0fe/';
 const MAX_SLOTS_CATCHUP = 10;
 const SLOT_DELAY_MS     = 80;
 const MAX_SLOT_RETRIES  = 3;
