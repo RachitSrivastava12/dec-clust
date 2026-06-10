@@ -3,9 +3,8 @@
 require('dotenv').config();
 
 module.exports = {
-  // Use mainnet RPC URL
-  RPC_URL: "https://hardworking-omniscient-panorama.solana-mainnet.quiknode.pro/b6691a98b125aba5fc836b2e9f0438764df1c0fe/" ,
-  // this url will be inactive in a week no need to hide it)
+  // Use mainnet RPC URL — read from .env (RPC_URL), fall back to hardcoded if missing
+  RPC_URL: process.env.RPC_URL || "https://hardworking-omniscient-panorama.solana-mainnet.quiknode.pro/b6691a98b125aba5fc836b2e9f0438764df1c0fe/" ,
   
   // Poll every 1 second for faster detection
   POLL_INTERVAL_MS: parseInt(process.env.POLL_INTERVAL_MS || '1000', 10),
